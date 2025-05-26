@@ -54,12 +54,12 @@ def read_finances(request: Request, db: Session = Depends(get_db)):
         },
     )
 
-@router.post("/", response_class=RedirectResponse) # <--- CAMBIADO: Antes era /finances
+@router.post("/") # Esto corresponderá a /finances/ debido al prefix en router.py
 def create_finance(
-    transaction_type: str = Form(..., alias="tipo"),
-    category: str = Form(..., alias="categoria"),
-    amount: float = Form(..., alias="monto"),
-    transaction_date: date = Form(..., alias="fecha"),
+    tipo: str = Form(..., alias="tipo"),
+    monto: float = Form(..., alias="monto"),
+    categoria: str = Form(..., alias="categoria"),
+    fecha: date = Form(..., alias="fecha"),
     db: Session = Depends(get_db)
 ):
     finance_data = schemas.FinanceCreate(

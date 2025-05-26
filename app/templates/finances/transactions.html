@@ -2,7 +2,7 @@
 <div>
   <h2>Transacciones</h2>
 
-<form method="post" action="/finanzas">
+<form method="post" action="/">
     <label for="tipo">Tipo:</label>
     <select name="tipo" id="tipo" required>
       <option value="ingreso">Ingreso</option>
@@ -33,7 +33,7 @@
     <tbody>
       {% for fin in finances %}
       <tr>
-        <form method="post" action="/finanzas/{{ fin.id }}/edit">
+        <form method="post" action="/">
           <td>
             <select name="tipo" required>
               <option value="ingreso" {% if fin.tipo == 'ingreso' %}selected{% endif %}>Ingreso</option>
@@ -46,7 +46,7 @@
           <td><button type="submit">Guardar</button></td>
         </form>
         <td>
-          <form method="post" action="/finanzas/{{ fin.id }}/delete" onsubmit="return confirm('¿Eliminar esta transacción?');">
+          <form method="post" action="/" onsubmit="return confirm('¿Eliminar esta transacción?');">
             <button type="submit">Eliminar</button>
           </form>
         </td>
