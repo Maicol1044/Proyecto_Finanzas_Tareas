@@ -1,0 +1,23 @@
+<!-- templates/base_finanzas.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Gestor de Finanzas</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2rem; max-width: 900px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 1rem; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: center; }
+    th { background-color: #f2f2f2; }
+    input, select { padding: 5px; margin-right: 10px; }
+    button { padding: 5px 10px; }
+  </style>
+</head>
+<body>
+
+  <h1>Gestor de Finanzas</h1>
+
+  {% include "finanzas/transacciones.html" %}
+  {% include "finanzas/resumen.html" %}
+</body>
+</html>

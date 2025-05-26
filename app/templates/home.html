@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Home - My Application{% endblock %} {# Updated title #}
+
+{% block content %}
+<div class="p-5 mb-4 bg-light rounded-3">
+    <div class="container-fluid py-5 text-center">
+        <h1 class="display-5 fw-bold">Welcome to Your Personal Manager</h1> {# Updated text #}
+        <p class="col-md-8 fs-4 mx-auto">
+            Organize your finances and manage your projects efficiently. {# Updated text #}
+        </p>
+        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+            <a href="/finances" class="btn btn-primary btn-lg px-4 me-sm-3">Go to Finances</a> {# Updated link and text #}
+            <a href="/tasks" class="btn btn-secondary btn-lg px-4">Go to Tasks</a> {# Updated link and text #}
+        </div>
+    </div>
+</div>
+
+<div class="row align-items-md-stretch">
+    <div class="col-md-6 mb-4">
+        <div class="h-100 p-5 bg-light border rounded-3 text-center">
+            <h2>Finance Control</h2> {# Updated text #}
+            <p>Keep a detailed record of your income and expenses. Visualize your balance and categories.</p> {# Updated text #}
+            <a href="/finances" class="btn btn-outline-primary">View Finances</a> {# Updated link and text #}
+        </div>
+    </div>
+    <div class="col-md-6 mb-4">
+        <div class="h-100 p-5 bg-light border rounded-3 text-center">
+            <h2>Project and Task Management</h2> {# Updated text #}
+            <p>Organize your tasks, set priorities, and deadlines for your projects.</p> {# Updated text #}
+            <a href="/tasks" class="btn btn-outline-secondary">View Tasks</a> {# Updated link and text #}
+        </div>
+    </div>
+</div>
+{% endblock %}

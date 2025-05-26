@@ -1,0 +1,17 @@
+<!-- templates/proyectos/lista_proyectos.html -->
+{% extends 'base.html' %}
+{% block title %}Proyectos{% endblock %}
+{% block content %}
+<h2 class="text-2xl font-semibold mb-4">Mis Proyectos</h2>
+<form method="post" class="mb-4 flex gap-2">
+    <input name="nombre" placeholder="Nombre del Proyecto" class="p-2 border rounded">
+    <button type="submit" class="bg-blue-500 text-white p-2 rounded">Crear Proyecto</button>
+</form>
+<ul>
+    {% for proyecto in proyectos %}
+    <li class="bg-white p-4 mb-2 shadow rounded">
+        <a href="/proyectos/{{ proyecto.id }}">{{ proyecto.nombre }}</a>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}

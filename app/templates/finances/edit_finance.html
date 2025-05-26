@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Edit Transaction{% endblock %} {# Updated title #}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="mb-4">Edit Financial Transaction</h1> {# Updated text #}
+
+    <div class="card">
+        <div class="card-header">
+            Transaction ID: {{ finance.id }} {# Updated text #}
+        </div>
+        <div class="card-body">
+            <form action="/finances/{{ finance.id }}/edit" method="post"> {# Updated action URL #}
+                <div class="mb-3">
+                    <label for="transaction_type" class="form-label">Transaction Type:</label> {# Updated text #}
+                    <select class="form-select" id="transaction_type" name="transaction_type" required> {# Updated name #}
+                        <option value="income" {% if finance.type == 'income' %}selected{% endif %}>Income</option> {# Updated value, text and property #}
+                        <option value="expense" {% if finance.type == 'expense' %}selected{% endif %}>Expense</option> {# Updated value, text and property #}
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="amount" class="form-label">Amount:</label> {# Updated text #}
+                    <input type="number" step="0.01" class="form-control" id="amount" name="amount" value="{{ finance.amount }}" required> {# Updated name and property #}
+                </div>
+                <div class="mb-3">
+                    <label for="category" class="form-label">Category:</label> {# Updated text #}
+                    <input type="text" class="form-control" id="category" name="category" value="{{ finance.category }}" required> {# Updated name and property #}
+                </div>
+                <div class="mb-3">
+                    <label for="transaction_date" class="form-label">Date:</label> {# Updated text #}
+                    <input type="date" class="form-control" id="transaction_date" name="transaction_date" value="{{ finance.date.strftime('%Y-%m-%d') }}" required> {# Updated name and property #}
+                </div>
+                <button type="submit" class="btn btn-primary me-2">Update Transaction</button> {# Updated text #}
+                <a href="/finances" class="btn btn-secondary">Cancel</a> {# Updated link and text #}
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

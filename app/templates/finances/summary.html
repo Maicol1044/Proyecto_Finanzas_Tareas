@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+{% block title %}Financial Summary{% endblock %} {# Updated title #}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="mb-4">Financial Summary</h1> {# Updated text #}
+
+    <div class="card mb-4">
+        <div class="card-header">
+            Register New Transaction {# Updated text #}
+        </div>
+        <div class="card-body">
+            <form action="/finances" method="post"> {# Updated action URL #}
+                <div class="mb-3">
+                    <label for="transaction_type" class="form-label">Transaction Type:</label> {# Updated text #}
+                    <select class="form-select" id="transaction_type" name="transaction_type" required> {# Updated name #}
+                        <option value="income">Income</option> {# Updated value and text #}
+                        <option value="expense">Expense</option> {# Updated value and text #}
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="amount" class="form-label">Amount:</label> {# Updated text #}
+                    <input type="number" step="0.01" class="form-control" id="amount" name="amount" required> {# Updated name #}
+                </div>
+                <div class="mb-3">
+                    <label for="category" class="form-label">Category:</label> {# Updated text #}
+                    <input type="text" class="form-control" id="category" name="category" placeholder="e.g., Food, Transport, Salary" required> {# Updated name and placeholder #}
+                </div>
+                <div class="mb-3">
+                    <label for="transaction_date" class="form-label">Date:</label> {# Updated text #}
+                    <input type="date" class="form-control" id="transaction_date" name="transaction_date" required> {# Updated name #}
+                </div>
+                <button type="submit" class="btn btn-primary">Register Transaction</button> {# Updated text #}
+            </form>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card text-white bg-success mb-3">
+                <div class="card-header">Total Income</div> {# Updated text #}
+                <div class="card-body">
+                    <h5 class="card-title">${{ "%.2f"|format(total_income) }}</h5> {# Updated variable #}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-white bg-danger mb-3">
+                <div class="card-header">Total Expenses</div> {# Updated text #}
+                <div class="card-body">
+                    <h5 class="card-title">${{ "%.2f"|format(total_expenses) }}</h5> {# Updated variable #}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-white {% if balance >= 0 %}bg-info{% else %}bg-warning{% endif %} mb-3">
+                <div class="card-header">Current Balance</div> {# Updated text #}
+                <div class="card-body">
+                    <h5 class="card-title">${{ "%.2f"|format(balance) }}</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header">Expenses by Category</div> {# Updated text #}
+                <div class="card-body">
+                    <canvas id="gastosChart"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header">Income by Category</div> {# Updated text #}
+                <div class="card-body">
+                    <canvas id="ingresosChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h2 class="mt-4">Recent Transactions</h2> {# Updated text #}
+    {% if finances %}
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Type</th> {# Updated text #}
+                    <th>Amount</th> {# Updated text #}
+                    <th>Category</th> {# Updated text #}
+                    <th>Date</th> {# Updated text #}
+                    <th>Actions</th> {# Updated text #}
+                </tr>
+            </thead>
+            <tbody>
+                {% for finance in finances %}
+                <tr>
+                    <td>
+                        <span class="badge {% if finance.type == 'income' %}bg-success{% else %}bg-danger{% endif %}"> {# Updated property and values #}
+                            {{ finance.type | capitalize }} {# Updated property #}
+                        </span>
+                    </td>
+                    <td>${{ "%.2f"|format(finance.amount) }}</td> {# Updated property #}
+                    <td>{{ finance.category }}</td> {# Updated property #}
+                    <td>{{ finance.date.strftime('%Y-%m-%d') }}</td> {# Updated property #}
+                    <td>
+                        <a href="/finances/{{ finance.id }}/edit" class="btn btn-sm btn-warning">Edit</a> {# Updated link and text #}
+                        <form action="/finances/{{ finance.id }}/delete" method="post" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this transaction?');"> {# Updated link and text #}
+                            <button type="submit" class="btn btn-sm btn-danger">Delete</button> {# Updated text #}
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <p class="alert alert-info">No transactions recorded yet.</p> {# Updated text #}
+    {% endif %}
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Global variables (Jinja2 injects data here)
+    const globalExpensesLabels = {{ expenses_labels | tojson }}; {# Updated variable name #}
+    const globalExpensesValues = {{ expenses_values | tojson }}; {# Updated variable name #}
+    const globalIncomeLabels = {{ income_labels | tojson }};     {# Updated variable name #}
+    const globalIncomeValues = {{ income_values | tojson }};     {# Updated variable name #}
+</script>
+<script src="{{ url_for('static', path='/js/charts.js') }}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        renderCharts(globalExpensesLabels, globalExpensesValues, globalIncomeLabels, globalIncomeValues);
+    });
+</script>
+{% endblock %}
