@@ -5,9 +5,11 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 from sqlalchemy.orm import Session
 
 from app.database import get_db
+from app.models.project import Project  # ✅ importa el modelo
 from app.schemas.task import TaskCreate
 from app.services.task_service import create_task, get_tasks
 from app.config import templates
+from app.models.task import Task
 
 # IMPORTA TUS SUB-ROUTERS ESPECÍFICOS AQUÍ
 from .finance_routes import router as finance_router_instance # Cambiado el nombre para evitar conflictos
@@ -19,14 +21,27 @@ router = APIRouter()
 router.include_router(finance_router_instance, prefix="/finances", tags=["finances"]) # Añade un prefijo para /finances
 router.include_router(task_router_instance, prefix="/tasks", tags=["tasks"]) # Añade un prefijo para /tasks
 
+@router.get("/projects/{project_id}/tasks", response_class=HTMLResponse)
+def tasks_page(request: Request, project_id: int, db: Session = Depends(get_db)):
+    project = db.query(Project).get(project_id)  # ⚠️ Esto funciona, pero hay mejor alternativa
+    if not project:
+        return HTMLResponse(content="Proyecto no encontrado", status_code=404)
+    
+    tasks = db.query(Task).filter(Task.project_id == project_id).all()  # ✅ Usa la clase 'Task'
+    
+    return templates.TemplateResponse(
+        "projects/task_projects.html",
+        {
+            "request": request,
+            "tasks": tasks,
+            "project": project,         # Instancia del proyecto
+            "project_id": project.id    # Lo puedes seguir usando si lo necesitas por separado
+        }
+    )
 
-@router.get("/tasks", response_class=HTMLResponse)
-def tasks_page(request: Request, db: Session = Depends(get_db)):
-    tasks = get_tasks(db)
-    return templates.TemplateResponse("projects/task_projects.html", {"request": request, "tasks": tasks})
-
-@router.post("/tasks")
+@router.post("/projects/{project_id}/tasks")
 def add_task(
+    project_id: int,
     title: str = Form(...),
     description: str = Form(...),
     priority: str = Form(...),
@@ -37,7 +52,19 @@ def add_task(
         title=title,
         description=description,
         priority=priority,
-        deadline=deadline
+        deadline=deadline,
+        project_id=project_id   # ✅ este campo debe estar en tu schema
     )
     create_task(db, task_data)
-    return RedirectResponse(url="/tasks", status_code=303)
+    return RedirectResponse(url=f"/projects/{project_id}/tasks", status_code=303)
+
+@router.get("/tasks/{task_id}/edit", response_class=HTMLResponse)
+def edit_task_form(task_id: int, request: Request, db: Session = Depends(get_db)):
+    task = db.query(Task).get(task_id)
+    if not task:
+        return HTMLResponse("Tarea no encontrada", status_code=404)
+    
+    return templates.TemplateResponse("projects/edit_task.html", {
+        "request": request,
+        "task": task
+    })

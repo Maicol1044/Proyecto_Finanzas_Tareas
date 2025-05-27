@@ -1,16 +1,28 @@
 # app/schemas/task.py
-from pydantic import BaseModel, ConfigDict
-from datetime import datetime
+from pydantic import BaseModel
+from datetime import date
+from typing import Optional
+import enum
 
-class TaskCreate(BaseModel):
+class TaskStatus(str, enum.Enum):
+    pending = "pending"
+    in_progress = "in_progress"
+    completed = "completed"
+
+class TaskBase(BaseModel):
     title: str
-    description: str
-    priority: str
-    deadline: datetime
+    description: Optional[str] = None
+    status: TaskStatus = TaskStatus.pending
+    due_date: Optional[date] = None
 
-class TaskOut(TaskCreate):
+class TaskCreate(TaskBase):
+    pass
+
+class TaskUpdate(TaskBase):
+    pass
+
+class TaskRead(TaskBase):
     id: int
-    completed: bool
-    created_at: datetime
 
-    model_config = ConfigDict(from_attributes=True) # Updated Pydantic v2 syntax
+    class Config:
+        orm_mode = True

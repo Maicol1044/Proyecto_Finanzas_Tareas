@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Create Task{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Create Task</h2>
+    <form action="/projects/{{ project_id }}/tasks/create" method="post">
+        <div class="mb-3">
+            <label for="title" class="form-label">Title</label>
+            <input type="text" name="title" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea name="description" class="form-control"></textarea>
+        </div>
+        <div class="mb-3">
+            <label for="due_date" class="form-label">Due Date</label>
+            <input type="date" name="due_date" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Create</button>
+    </form>
+</div>
+{% endblock %}

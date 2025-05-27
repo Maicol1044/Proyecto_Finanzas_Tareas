@@ -1,32 +1,26 @@
-{% extends 'base.html' %}
-{% block title %}Project Tasks{% endblock %} {# Updated title #}
+{% extends "base.html" %}
+{% block title %}Tasks{% endblock %}
 
 {% block content %}
-<h2 class="text-2xl font-semibold mb-4">Project Tasks</h2> {# Updated text #}
+<div class="container mt-5">
+    <h1 class="mb-4">Tasks for Project {{ project_id }}</h1>
 
-<form method="post" action="/tasks" class="grid grid-cols-1 md:grid-cols-5 gap-2 mb-4"> {# Updated action URL #}
-    <input name="title" placeholder="Title" class="p-2 border rounded"> {# Updated name and placeholder #}
-    <input name="description" placeholder="Description" class="p-2 border rounded"> {# Updated name and placeholder #}
-    <input name="deadline" type="date" class="p-2 border rounded">
-    <select name="priority" class="p-2 border rounded"> {# Updated name #}
-        <option value="high">High</option> {# Updated value and text #}
-        <option value="medium">Medium</option> {# Updated value and text #}
-        <option value="low">Low</option> {# Updated value and text #}
-    </select>
-    <button type="submit" class="btn bg-green-500 text-white p-2 rounded">Add</button> {# Updated text #}
-</form>
+    <a href="/projects/{{ project.id }}/tasks/create" class="btn btn-primary">Add Task</a>
 
-<ul>
-    {% for task in tasks %} {# Changed loop variable to 'task' #}
-    <li class="bg-white p-4 mb-2 shadow rounded">
-        <div class="flex justify-between items-center">
-            <div>
-                <p class="font-bold">{{ task.title }}</p> {# Updated property #}
-                <p>{{ task.description }}</p> {# Updated property #}
-                <p>Due: {{ task.deadline.strftime('%Y-%m-%d') }} | Priority: {{ task.priority | capitalize }} | Completed: {{ task.completed }}</p> {# Updated properties and text #}
-            </div>
+    {% for task in tasks %}
+    <div class="card mb-3 {% if task.status == 'completed' %}border-success{% endif %}">
+        <div class="card-body">
+            <h5 class="card-title">{{ task.title }}</h5>
+            <p class="card-text">{{ task.description }}</p>
+            <p class="card-text"><strong>Due:</strong> {{ task.due_date }}</p>
+            <p class="card-text"><strong>Status:</strong> {{ task.status }}</p>
+
+            <form action="/tasks/{{ task.id }}/edit" method="get" style="display:inline-block">
+                <button type="submit" class="btn btn-primary btn-sm">Edit</button>
+            </form>
         </div>
-    </li>
+    </div>
     {% endfor %}
-</ul>
+</div>
 {% endblock %}
+
