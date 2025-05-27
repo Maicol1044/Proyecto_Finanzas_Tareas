@@ -3,24 +3,33 @@
 
 {% block content %}
 <div class="container mt-5">
-    <h1 class="mb-4">Tasks for Project {{ project_id }}</h1>
+    <h1 class="mb-4">Tasks for Project {{ project.name }}</h1>
 
-    <a href="/projects/{{ project.id }}/tasks/create" class="btn btn-primary">Add Task</a>
+    <a href="/projects/{{ project.id }}/tasks/create" class="btn btn-primary mb-4">Add Task</a>
 
-    {% for task in tasks %}
-    <div class="card mb-3 {% if task.status == 'completed' %}border-success{% endif %}">
-        <div class="card-body">
-            <h5 class="card-title">{{ task.title }}</h5>
-            <p class="card-text">{{ task.description }}</p>
-            <p class="card-text"><strong>Due:</strong> {{ task.due_date }}</p>
-            <p class="card-text"><strong>Status:</strong> {{ task.status }}</p>
+    {% if tasks %}
+        {% for task in tasks %}
+        <div class="card mb-3 {% if task.status == 'completed' %}border-success{% endif %}">
+            <div class="card-body">
+                <h5 class="card-title">{{ task.title }}</h5>
+                <p class="card-text">{{ task.description }}</p>
+                <p class="card-text"><strong>Due:</strong> {{ task.deadline }}</p>
+                <p class="card-text"><strong>Status:</strong> {{ task.status }}</p>
 
-            <form action="/tasks/{{ task.id }}/edit" method="get" style="display:inline-block">
-                <button type="submit" class="btn btn-primary btn-sm">Edit</button>
-            </form>
+                <div class="d-flex gap-2">
+                    <a href="/tasks/{{ task.id }}/edit" class="btn btn-sm btn-outline-primary">Edit</a>
+
+                    <form action="/tasks/{{ task.id }}/complete" method="post" onsubmit="return confirm('Mark task as complete?');">
+                        <button type="submit" class="btn btn-sm btn-success">Complete</button>
+                    </form>
+                </div>
+            </div>
         </div>
-    </div>
-    {% endfor %}
+        {% endfor %}
+    {% else %}
+        <p class="text-muted">No tasks yet for this project. Use the button above to add one.</p>
+    {% endif %}
 </div>
 {% endblock %}
+
 

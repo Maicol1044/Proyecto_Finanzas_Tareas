@@ -10,16 +10,16 @@ from app.schemas.task import TaskCreate
 from app.services.task_service import create_task, get_tasks
 from app.config import templates
 from app.models.task import Task
+from .project_routes import router as project_router_instance
 
 # IMPORTA TUS SUB-ROUTERS ESPECÍFICOS AQUÍ
 from .finance_routes import router as finance_router_instance # Cambiado el nombre para evitar conflictos
 from .task_routes import router as task_router_instance # Cambiado el nombre para evitar conflictos
 
 router = APIRouter()
-
-# INCLUYE LOS SUB-ROUTERS EN EL ROUTER PRINCIPAL
+router.include_router(project_router_instance, tags=["projects"])
 router.include_router(finance_router_instance, prefix="/finances", tags=["finances"]) # Añade un prefijo para /finances
-router.include_router(task_router_instance, prefix="/tasks", tags=["tasks"]) # Añade un prefijo para /tasks
+router.include_router(task_router_instance, tags=["tasks"])
 
 @router.get("/projects/{project_id}/tasks", response_class=HTMLResponse)
 def tasks_page(request: Request, project_id: int, db: Session = Depends(get_db)):

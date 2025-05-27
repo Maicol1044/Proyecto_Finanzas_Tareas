@@ -49,7 +49,10 @@ def create_project(name: str = Form(...), description: str = Form(...), db: Sess
 @router.get("/projects/{project_id}/edit", response_class=HTMLResponse)
 def edit_project_form(project_id: int, request: Request, db: Session = Depends(get_db)):
     project = db.query(Project).get(project_id)
-    return templates.TemplateResponse("edit_project.html", {"request": request, "project": project})
+    return templates.TemplateResponse("projects/edit_project.html", {
+    "request": request,
+    "project": project
+})
 
 @router.post("/projects/{project_id}/edit")
 def edit_project(project_id: int, name: str = Form(...), description: str = Form(...), db: Session = Depends(get_db)):
@@ -88,4 +91,62 @@ def view_tasks(request: Request, project_id: int, db: Session = Depends(get_db))
         "project": project,
         "tasks": tasks,
         "project_id": project_id  # ✅ Esto es lo que se necesita en el HTML
+    })
+
+@router.get("/projects/{project_id}/tasks/create", response_class=HTMLResponse)
+def create_task_form(project_id: int, request: Request):
+    return templates.TemplateResponse("projects/create_task.html", {
+        "request": request,
+        "project_id": project_id
+    })
+
+@router.post("/projects/{project_id}/tasks/create")
+def create_task(
+    project_id: int,
+    title: str = Form(...),
+    description: str = Form(""),
+    status: str = Form("pending"),
+    due_date: date = Form(None),
+    db: Session = Depends(get_db)
+):
+    task = Task(
+        title=title,
+        description=description,
+        status=status,
+        due_date=due_date,
+        project_id=project_id
+    )
+    db.add(task)
+    db.commit()
+    return RedirectResponse(f"/projects/{project_id}/tasks", status_code=303)
+
+@router.post("/tasks/{task_id}/edit")
+def edit_task(
+    task_id: int,
+    title: str = Form(...),
+    description: str = Form(""),
+    status: str = Form("pending"),
+    due_date: date = Form(None),
+    db: Session = Depends(get_db)
+):
+    task = db.query(Task).get(task_id)
+    if not task:
+        raise HTTPException(status_code=404, detail="Tarea no encontrada")
+
+    task.title = title
+    task.description = description
+    task.status = status
+    task.due_date = due_date
+
+    db.commit()
+    return RedirectResponse(f"/projects/{task.project_id}/tasks", status_code=303)
+
+@router.get("/tasks/{task_id}/edit", response_class=HTMLResponse)
+def edit_task_form(task_id: int, request: Request, db: Session = Depends(get_db)):
+    task = db.query(Task).get(task_id)
+    if not task:
+        raise HTTPException(status_code=404, detail="Tarea no encontrada")
+    return templates.TemplateResponse("projects/edit_task.html", {
+        "request": request,
+        "task": task
     })

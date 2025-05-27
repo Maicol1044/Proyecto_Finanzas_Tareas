@@ -6,7 +6,7 @@
     <h2>Create Task</h2>
     <form action="/projects/{{ project_id }}/tasks/create" method="post">
         <div class="mb-3">
-            <label for="title" class="form-label">Title</label>
+            <label for="name" class="form-label">Task Name</label>
             <input type="text" name="title" class="form-control" required>
         </div>
         <div class="mb-3">
@@ -14,10 +14,20 @@
             <textarea name="description" class="form-control"></textarea>
         </div>
         <div class="mb-3">
+            <label for="status" class="form-label">Status</label>
+            <select name="status" class="form-control">
+                <option value="pending">Pending</option>
+                <option value="in_progress">In Progress</option>
+                <option value="completed">Completed</option>
+            </select>
+        </div>
+        <div class="mb-3">
             <label for="due_date" class="form-label">Due Date</label>
-            <input type="date" name="due_date" class="form-control" required>
+            <input type="date" name="due_date" class="form-control">
         </div>
         <button type="submit" class="btn btn-primary">Create</button>
     </form>
 </div>
 {% endblock %}
+
+

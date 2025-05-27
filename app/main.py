@@ -5,7 +5,7 @@ from app.routes.router import router
 from app.config import STATIC_DIR, templates # Ensure templates and STATIC_DIR are imported
 from fastapi.staticfiles import StaticFiles
 from app.database import engine, Base
-from app.models import finance, task, user
+from app.models import finance, task, user, project
 
 # Crear las tablas de la base de datos
 Base.metadata.create_all(bind=engine)

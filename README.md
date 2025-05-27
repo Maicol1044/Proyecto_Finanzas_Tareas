@@ -27,7 +27,7 @@ MI_PROYECTO_PROGRAMACION_II/
 │   │   └── task_service.py
 │   ├── templates/
 |   |   ├── base.html
-|   │   └── home.py 
+|   │   └── home.html
 │   │   ├── finances/
 |   |   |   ├── base_finance.html
 |   |   |   ├── edit_finance.html
