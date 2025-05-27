@@ -29,6 +29,7 @@ Aplicación web desarrollada con **FastAPI**, **SQLAlchemy** y **Jinja2**, que p
 
 ## Estructura del Proyecto
 
+```
 MI_PROYECTO_PROGRAMACION_II/
 ├──app/
 │   ├── main.py
@@ -71,7 +72,7 @@ MI_PROYECTO_PROGRAMACION_II/
 ├── .gitignore
 ├── requirements.txt
 ├── README.md
-````
+```
 
 # Proyecto: Proyecto_Finanzas_Tareas - Diseño POO
 
