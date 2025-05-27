@@ -12,21 +12,35 @@ MI_PROYECTO_PROGRAMACION_II/
 │   ├── database.py
 │   ├── config.py
 │   ├── models/
-│   │   ├── __init__.py
 │   │   ├── user.py
 │   │   ├── finance.py
 │   │   └── task.py
 │   ├── schemas/
-│   │   ├── __init__.py
 │   │   ├── finance.py
 │   │   └── task.py
 │   ├── routes/
-│   │   ├── __init__.py
+│   │   ├── finance_router.py
+│   │   ├── task_routes.py
 │   │   └── router.py
 │   ├── services/
-│   │   ├── __init__.py
 │   │   ├── finance_service.py
 │   │   └── task_service.py
+│   ├── templates/
+|   |   ├── base.html
+|   │   └── home.py 
+│   │   ├── finances/
+|   |   |   ├── base_finance.html
+|   |   |   ├── edit_finance.html
+|   |   |   ├── summary.html
+|   │   │   └── transactions.html 
+│   │   └── projects/
+|   |   |   ├── create_task.html
+|   |   |   ├── edit_task.html
+|   |   |   ├── list_projects.html
+|   │   │   └── task_projects.html 
+│   │   └── static/
+│   │   |   ├── js/
+|   │   │   └── charts.js
 ├── .gitignore
 ├── requirements.txt
 ├── README.md
