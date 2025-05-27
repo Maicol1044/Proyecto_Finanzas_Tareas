@@ -84,17 +84,17 @@ def edit_finance_form(finance_id: int, request: Request, db: Session = Depends(g
 @router.post("/{finance_id}/edit", response_class=RedirectResponse)
 def update_finance(
     finance_id: int,
-    tipo: str = Form(..., alias="tipo"),
-    categoria: str = Form(..., alias="categoria"),
-    amount: float = Form(..., alias="monto"),
-    transaction_date: date = Form(..., alias="fecha"),
+    transaction_type: str = Form(...),
+    amount: float = Form(...),
+    category: str = Form(...),
+    transaction_date: date = Form(...),
     db: Session = Depends(get_db)
 ):
     finance_data = schemas.FinanceUpdate(
-        tipo=schemas.TransactionType(tipo),
-        categoria=categoria,
-        monto=amount,
-        fecha=transaction_date
+        type=schemas.TransactionType(transaction_type),
+        category=category,
+        amount=amount,
+        date=transaction_date
     )
     finance_service.update_finance(db, finance_id, finance_data)
     return RedirectResponse(url="/finances", status_code=HTTP_303_SEE_OTHER)
