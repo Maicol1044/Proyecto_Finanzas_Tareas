@@ -1,8 +1,7 @@
-<!-- templates/transacciones.html -->
 <div>
   <h2>Transacciones</h2>
 
-<form method="post" action="/">
+  <form method="post" action="/">
     <label for="tipo">Tipo:</label>
     <select name="tipo" id="tipo" required>
       <option value="ingreso">Ingreso</option>
@@ -16,8 +15,9 @@
     <input type="text" name="categoria" id="categoria" required placeholder="Ej. Alimentación" />
 
     <label for="fecha">Fecha:</label>
-    <input type="date" name="fecha" id="fecha" required /> <button type="submit">Agregar</button>
-</form>
+    <input type="date" name="fecha" id="fecha" required />
+    <button type="submit">Agregar</button>
+  </form>
 
   <table>
     <thead>
@@ -33,7 +33,7 @@
     <tbody>
       {% for fin in finances %}
       <tr>
-        <form method="post" action="/">
+        <form method="post" action="/finances/{{ fin.id }}/edit">
           <td>
             <select name="tipo" required>
               <option value="ingreso" {% if fin.tipo == 'ingreso' %}selected{% endif %}>Ingreso</option>
@@ -46,7 +46,7 @@
           <td><button type="submit">Guardar</button></td>
         </form>
         <td>
-          <form method="post" action="/" onsubmit="return confirm('¿Eliminar esta transacción?');">
+          <form method="post" action="/finances/{{ fin.id }}/delete" onsubmit="return confirm('¿Eliminar esta transacción?');">
             <button type="submit">Eliminar</button>
           </form>
         </td>
