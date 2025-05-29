@@ -180,7 +180,6 @@ Accede desde tu navegador a: http://localhost:8000
 ## Pruebas realizadas
 Las pruebas realizadas fueron por mí mismo, ensayando cada funcionalidad de la aplicación web para que todo funcionara correctamente
 
-##Conclusiones
 # Logros
 Pude dominar FastAPI, dominar bases de datos, pude dominar Git y mejoré mucho en la organización de código y arquitectura
 
@@ -194,7 +193,7 @@ Este proyecto me enseñó la importancia d eplanificar y diseñar bien una aplic
 La aplicación tiene muchos aspectos a mejorar pero el principal sería integrar lo del usuario, que todo el que entre pueda de alguna o otra manera iniciar sesión
 
 ## Diagrama de Clases UML
-Puse esto al final porque me quitaba el formato de todo lo que estuvier abajo
+Puse esto al final porque me quitaba el formato de todo lo que estuviera abajo
 
 ```plantuml
 @startuml
