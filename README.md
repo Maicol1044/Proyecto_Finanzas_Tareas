@@ -162,7 +162,6 @@ En este escenario específico, aunque la clase `User` y sus relaciones no estén
 
 ## Instalación
 
-```bash
 # 1. Clona este repositorio
 git clone https://github.com/Maicol1044/Proyecto_Finanzas_Tareas.git
 cd Proyecto_Finanzas_Tareas
