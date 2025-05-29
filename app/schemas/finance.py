@@ -3,15 +3,15 @@ from pydantic import BaseModel, ConfigDict
 from datetime import date
 import enum
 
-class TransactionType(str, enum.Enum): # Must match model enum
+class TransactionType(str, enum.Enum): 
     income = "income"
     expense = "expense"
 
 class FinanceBase(BaseModel):
-    type: TransactionType    # Changed field name
-    amount: float            # Changed field name
-    category: str            # Changed field name
-    date: date               # Changed field name
+    type: TransactionType  
+    amount: float            
+    category: str           
+    date: date               
 
 class FinanceCreate(FinanceBase):
     pass

@@ -5,37 +5,36 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 from sqlalchemy.orm import Session
 
 from app.database import get_db
-from app.models.project import Project  # ✅ importa el modelo
+from app.models.project import Project  
 from app.schemas.task import TaskCreate
 from app.services.task_service import create_task, get_tasks
 from app.config import templates
 from app.models.task import Task
 from .project_routes import router as project_router_instance
 
-# IMPORTA TUS SUB-ROUTERS ESPECÍFICOS AQUÍ
-from .finance_routes import router as finance_router_instance # Cambiado el nombre para evitar conflictos
-from .task_routes import router as task_router_instance # Cambiado el nombre para evitar conflictos
+from .finance_routes import router as finance_router_instance 
+from .task_routes import router as task_router_instance 
 
 router = APIRouter()
 router.include_router(project_router_instance, tags=["projects"])
-router.include_router(finance_router_instance, prefix="/finances", tags=["finances"]) # Añade un prefijo para /finances
+router.include_router(finance_router_instance, prefix="/finances", tags=["finances"]) 
 router.include_router(task_router_instance, tags=["tasks"])
 
 @router.get("/projects/{project_id}/tasks", response_class=HTMLResponse)
 def tasks_page(request: Request, project_id: int, db: Session = Depends(get_db)):
-    project = db.query(Project).get(project_id)  # ⚠️ Esto funciona, pero hay mejor alternativa
+    project = db.query(Project).get(project_id)  
     if not project:
         return HTMLResponse(content="Proyecto no encontrado", status_code=404)
     
-    tasks = db.query(Task).filter(Task.project_id == project_id).all()  # ✅ Usa la clase 'Task'
+    tasks = db.query(Task).filter(Task.project_id == project_id).all()  
     
     return templates.TemplateResponse(
         "projects/task_projects.html",
         {
             "request": request,
             "tasks": tasks,
-            "project": project,         # Instancia del proyecto
-            "project_id": project.id    # Lo puedes seguir usando si lo necesitas por separado
+            "project": project,         
+            "project_id": project.id    
         }
     )
 
@@ -53,7 +52,7 @@ def add_task(
         description=description,
         priority=priority,
         deadline=deadline,
-        project_id=project_id   # ✅ este campo debe estar en tu schema
+        project_id=project_id  
     )
     create_task(db, task_data)
     return RedirectResponse(url=f"/projects/{project_id}/tasks", status_code=303)

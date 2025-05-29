@@ -69,7 +69,6 @@ def delete_project(project_id: int, db: Session = Depends(get_db)):
     db.commit()
     return RedirectResponse("/projects", status_code=303)
 
-# ✅ NUEVA RUTA: Marcar tarea como completada y eliminarla en segundo plano
 @router.post("/tasks/{task_id}/complete")
 def complete_task(task_id: int, background_tasks: BackgroundTasks, db: Session = Depends(get_db)):
     task = db.query(Task).filter(Task.id == task_id).first()
@@ -90,7 +89,7 @@ def view_tasks(request: Request, project_id: int, db: Session = Depends(get_db))
         "request": request,
         "project": project,
         "tasks": tasks,
-        "project_id": project_id  # ✅ Esto es lo que se necesita en el HTML
+        "project_id": project_id  
     })
 
 @router.get("/projects/{project_id}/tasks/create", response_class=HTMLResponse)

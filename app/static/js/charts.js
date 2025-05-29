@@ -1,15 +1,14 @@
 // app/static/js/charts.js
 
-function renderCharts(expensesLabels, expensesValues, incomeLabels, incomeValues) { // Renamed parameters
-    // Expenses Chart
-    const expensesCtx = document.getElementById('gastosChart'); // Still refers to HTML element ID 'gastosChart'
+function renderCharts(expensesLabels, expensesValues, incomeLabels, incomeValues) { 
+    const expensesCtx = document.getElementById('gastosChart'); 
     if (expensesCtx) {
         new Chart(expensesCtx, {
             type: 'pie',
             data: {
-                labels: expensesLabels, // Renamed variable
+                labels: expensesLabels, 
                 datasets: [{
-                    data: expensesValues, // Renamed variable
+                    data: expensesValues,
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.8)',
                         'rgba(54, 162, 235, 0.8)',
@@ -37,22 +36,21 @@ function renderCharts(expensesLabels, expensesValues, incomeLabels, incomeValues
                     },
                     title: {
                         display: true,
-                        text: 'Expenses by Category' // Updated text
+                        text: 'Expenses by Category' 
                     }
                 }
             }
         });
     }
 
-    // Income Chart
-    const incomeCtx = document.getElementById('ingresosChart'); // Still refers to HTML element ID 'ingresosChart'
+    const incomeCtx = document.getElementById('ingresosChart');
     if (incomeCtx) {
         new Chart(incomeCtx, {
             type: 'pie',
             data: {
-                labels: incomeLabels, // Renamed variable
+                labels: incomeLabels, 
                 datasets: [{
-                    data: incomeValues, // Renamed variable
+                    data: incomeValues, 
                     backgroundColor: [
                         'rgba(40, 167, 69, 0.8)', // Green
                         'rgba(0, 123, 255, 0.8)', // Blue
@@ -78,7 +76,6 @@ function renderCharts(expensesLabels, expensesValues, incomeLabels, incomeValues
                     },
                     title: {
                         display: true,
-                        text: 'Income by Category' // Updated text
                     }
                 }
             }
